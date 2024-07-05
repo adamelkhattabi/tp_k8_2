@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./exam-frontend
+    ports:
+      - "3000:80"
+
+  backend:
+    build: ./exam-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo-db-service
+    environment:
+      MONGO_URL: mongodb://mongo-db-service:27017/exam
+
+  mongo-db-service:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
